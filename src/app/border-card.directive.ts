@@ -15,7 +15,7 @@ export class BorderCardDirective {
 	private initialColor: string = '#f5f5f5';
 	private defaultColor: string = '#009688';
 	private defaultHeight: number = 180;
-	private defaultWidth: string = '270';
+	private defaultWidth: string = '240';
 	private defaultWeight: string = 'normal'
 
 	// elementRef est une référence vers l'élément du dom sur lequel nous allons appliquer une directive
