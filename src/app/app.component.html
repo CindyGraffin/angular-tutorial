@@ -1,10 +1,9 @@
 <h1 class="center">Liste de Pokémons</h1>
-<input #input (keyup.enter)="selectPokemon(input.value)" type="number" />
 
 <div class="container">
 	<div class="row">
 		<div *ngFor="let pokemon of pokemonList" class="col m4 s6">
-			<div class="card horizontal">
+			<div class="card horizontal" (click)="selectPokemon(pokemon.id)" pokemonBorderCard pokemonBorderColor="red" pokemonWeight="bold" pokemonWidth="300">
 				<div class="card-image valign-wrapper">
                     <img [src]="pokemon.picture" [alt]="pokemon.name">
                 </div>

@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 	}
 
 	// pokemon: Pokemon est un contrat d'interface, il prend en paramétre un objet métier
-	selectPokemon(pokemonId: string) {
+	selectPokemon(pokemonId: number) {
 		const pokemon: Pokemon | undefined = this.pokemonList.find(pokemon => pokemon.id == +pokemonId)
 		// cast en HTMLInputElement de event.target qui permet de travailler dans la classe de notre composant
 		// + transforme le caractére à droite en nombre, quand il n'y a pas de valeur dans l'input null est convertit en 0 
