@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="row">
+		<div *ngFor="let pokemon of pokemonList" class="col m4 s6">
+			<div class="card horizontal"  pokemonBorderCard pokemonBorderColor="black" pokemonWeight="bold" pokemonWidth="250">
+				<div class="card-image valign-wrapper">
+                    <img [src]="pokemon.picture" [alt]="pokemon.name">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <p>{{pokemon.name}}</p>
+                        <!-- Un pipe permet d'effectuer des transformations dans le template -->
+                        <p><small>{{pokemon.created | date: "d MMMM y" : 'fr-FR' | uppercase}}</small></p>
+                        <span *ngFor="let type of pokemon.types" class="{{type | pokemonTypeColor}}">
+                            <p>{{type}}</p>
+                        </span>
+                    </div>
+                </div>
+			</div>
+            
+		</div>
+	</div>
+</div>

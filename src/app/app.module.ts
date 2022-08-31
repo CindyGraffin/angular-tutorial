@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { BorderCardDirective } from './border-card.directive';
 import localeFr from '@angular/common/locales/fr';
 import { PokemonTypeColorPipe } from './pokemon-type-color.pipe';
+import { ListPokemonComponent } from './list-pokemon/list-pokemon.component';
+import { DetailPokemonComponent } from './detail-pokemon/detail-pokemon.component';
 
 registerLocaleData(localeFr);
 
@@ -17,7 +19,9 @@ registerLocaleData(localeFr);
   declarations: [
     AppComponent,
     BorderCardDirective,
-    PokemonTypeColorPipe
+    PokemonTypeColorPipe,
+    ListPokemonComponent,
+    DetailPokemonComponent
   ],
   // éléments qu'on a besoin d'importer dans notre module mais qui sont d'autres modules
   imports: [
