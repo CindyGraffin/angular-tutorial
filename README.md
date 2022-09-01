@@ -1,6 +1,6 @@
 ### Les composants
 
-Un composant est un
+Un composant Angular représente un bout d'interface de l'application.
 
 **Vue**: portion de l'écran controllée par un composant, va être définie dans le template d'un composant et pilotée par la classe du composant
 
