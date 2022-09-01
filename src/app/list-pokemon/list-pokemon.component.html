@@ -8,7 +8,6 @@
                 <div class="card-stacked">
                     <div class="card-content">
                         <p>{{pokemon.name}}</p>
-                        <!-- Un pipe permet d'effectuer des transformations dans le template -->
                         <p><small>{{pokemon.created | date: "d MMMM y" : 'fr-FR' | uppercase}}</small></p>
                         <span *ngFor="let type of pokemon.types" class="{{type | pokemonTypeColor}}">
                             <p>{{type}}</p>

@@ -7,7 +7,6 @@ import { PageNotFoundComponent } from "./page-not-found/page-not-found.component
 const routes: Routes = [
 	{path: 'pokemons', component: ListPokemonComponent},
 	{path: 'pokemon/:id', component: DetailPokemonComponent},
-	// route par défaut au démarrage de l'application, 'pathMatch' permet d'éviter les effets de bord sur les routes et de mieux gérer les choses
 	{path: '', redirectTo: 'pokemons', pathMatch: 'full'},
 	{path: '**', component: PageNotFoundComponent}
 ];
@@ -18,4 +17,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule {}
 
-// router-outlet va permettre de relier les routes qu'on a défini avec notre template
+
