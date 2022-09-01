@@ -142,7 +142,9 @@ const pokemonId: string | null = this.route.snapshot.paramMap.get('id');
 
 ### Les modules
 
-Une application Angular est modulaire, elle est composée de modules de fonctionnalités. 
+Une application Angular est modulaire, elle est composée de modules de fonctionnalités. Un module permet de centraliser tout ce qui concerne la gestion d'une fonctionnalité.
+
+Générer un module: `ng generate module nom-du-module`
 
 Propriétés du décorateur `@NgModule`:
 
