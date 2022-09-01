@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row">
 		<div *ngFor="let pokemon of pokemonList" class="col m4 s6">
-			<div class="card horizontal"  pokemonBorderCard pokemonBorderColor="black" pokemonWeight="bold" pokemonWidth="250">
+			<div class="card horizontal"  pokemonBorderCard pokemonBorderColor="black" pokemonWeight="bold" pokemonWidth="250" (click)="goToPokemonDetail(pokemon)">
 				<div class="card-image valign-wrapper">
                     <img [src]="pokemon.picture" [alt]="pokemon.name">
                 </div>
