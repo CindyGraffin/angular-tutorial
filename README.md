@@ -1,3 +1,37 @@
+# Tutoriel Angular
+
+Ce projet est réalisé dans le cadre d'une vidéo tutoriel sur Angular, sur le théme des Pokémons. Les différentes fonctionnalités sont:
+- La visualisation de la liste globale des pokémons avec la possibilité de voir les détails de chaque pokemon
+- La possibilité de modifier certaines informations concernant chaque pokémon.  
+
+J'ai rédigé par mes propre soins dans ce readme, un récapitulatif de tout ce que j'ai appris au sein de ce tutoriel.  
+
+La vidéo du tutoriel à été réalisée par le youtubeur Simon Dieny, que je tiens a remercier, pour la clarté de ses explications et le contenu riche de cette vidéo qui m'a permise d'acquérir de bonnes bases sur Angular:pray:
+
+Je vous laisse le lien de la vidéo YouTube, n'hésitez pas à lui laisser un petit "*J'aime*" si vous avez apprécié le contenu:  [Angular Tutorial Français pour Débutant - Cours complet 9h [2022]](https://www.youtube.com/watch?v=DTIYVffhJuU&t=15350s&ab_channel=SimonDieny-ReconversionFullstackJavaScript)
+
+Lien de la documentation officielle Angular: [angular.io](https://angular.io/)
+
+## Angular
+
+**Angular** est un framework de développement d'applications web, construit sur Typescript, permettant de créer des applications dynamiques. Il comprend:
+- Un cadre basé sur des composants
+- Une collection de librairies comme par exemple le routage, la gestion de formulaire
+- Une suite d'outils de développements pour construire, tester et mettre à jour le code
+
+### Pré-requis
+
+Avant de suivre ce tutoriel, ou de lire cette documentation, il est fortement conseillé:
+- d'avoir de bonnes connaissances en HTML, CSS et JavaScript
+- de disposer d'un éditeur de code (par exemple *VSCode*)
+
+### Installation
+
+1. `git clone https://github.com/CindyGraffin/angular-tutorial.git`: clone le projet dans un dossier local
+2. `npm install`: installe tout les packages dont le projet dépend
+3. `ng serve`: compile et lance l'application sur un port donné
+
+
 ### Les composants
 
 Un composant Angular représente un bout d'interface de l'application.
@@ -59,7 +93,7 @@ constructor(private element: ElementRef) {
 @Input('pokemonWidth') pokemonWidth: string;` sans alias
 ````
 
-`@Host Listener`: permet de lier une méthode de notre directive à un évéenement donné, exemple:
+`@Host Listener`: permet de lier une méthode de notre directive à un événement donné, exemple:
 ````ts
 @HostListener('mouseenter') onMouseEnter() {
 	this.setBorder(this.pokemonBorderColor || this.defaultColor);
@@ -120,7 +154,7 @@ Configurer la route **404 Not Found**:
 ````
 
 Pour relier les routes définies avec notre template, il faut utiliser router-outlet:
-````ts
+````html
 <router-outlet></router-outlet>
 ````
 
@@ -134,7 +168,7 @@ goToPokemonDetail(pokemon: Pokemon) {
 ````
 
 - Utiliser la directive `routerLink` directement dans le template:
-````ts
+````html
 <a routerLink="/pokemons" class="waves-effect waves-teal btn-flat">
     Retourner à l' accueil
 </a>
@@ -206,4 +240,28 @@ constructor(
 	private pokemonService: PokemonService // récupére une instance unique de mon service 
 ) {}
 ````
+
+### Les formulaires
+
+Il existe deux modules permettant de créer des formulaires dans Angular, qui proviennent de la même librairie `@angular/forms`:
+
+- `FormsModule`: développe une partie importante du formulaire dans le template, on parle de **template-driven forms** (conseillé pour les petits formulaires)
+- `ReactiveFormsModule`: centré sur le développement du formulaire côté composant
+
+##### 1) FormsModule
+
+`@NgForm`: directive qui va créer une instance d'un objet nommé `FormGroup` au niveau  global du formulaire. Une référence à cette directive nous permet de savoir si le formulaire que remplit l'utilisateur est valide ou non. On peut également ête notifié dés que l'utilisateur déclenchera la soumission du formulaire. 
+
+`@NgModel`: directive qui doit s'appliquer sur chaque champ du formulaire afin de créer une instance de l'objet `FormControl`. Il track la valeur du champ, les intéractions avec l'utilisateur, la validité des données saisies, et garde la vue synchronisée avec ces données. Chaque `FormControl` doit être défini avec un nom (balise `name`).
+
+Déclaration de formulaire dans le template: 
+````html
+<form *ngIf="pokemon" (ngSubmit)="onSubmit()" #pokemonForm="ngForm">
+````
+- `(ngSubmit)="onSubmit()"`: on léve l'événement `ngSubmit` qui est géré par angular et construit par dessus l'événement submit natif du DOM
+- `#pokemonForm="ngForm"`: on déclare une variable référencée par le template, à laquelle on attribue le résultat de la directive `ngForm` qui va être utilisée pour déclarer une variable directement dans le template et va contenir un objet angular avec beaucoup plus d'informations que la balise HTML5 (par exemple état de validité du formulaire)
+
+`[(ngModel)]`: contient des crochets (property binding qui permet de pousser des données de la classe du composant vers le template) et des parenthèses (synthaxe de liaison d'évenements, pour remonter les événements du template du composant vers sa classe). En combinant les deux, cela permet de mettre en place une liaison de donnée bidirectionnelle.  
+
+`#name="ngModel"`: le résultat du `ngModel` qui en interne pour angular est un objet métier qui représenter un champ du formulaire, notamment son état de validié, va être attribué directement à une variable référencée dans le template.
 
