@@ -9,14 +9,15 @@ import { PokemonTypeColorPipe } from "./pokemon-type-color.pipe";
 import { RouterModule, Routes } from "@angular/router";
 import { PokemonService } from "./pokemon.service";
 import { FormsModule } from "@angular/forms";
-import { PokemonFormComponent } from './pokemon-form/pokemon-form.component';
-
+import { PokemonFormComponent } from "./pokemon-form/pokemon-form.component";
+import { EditPokemonComponent } from "./edit-pokemon/edit-pokemon.component";
 
 registerLocaleData(localeFr);
 
 const pokemonRoutes: Routes = [
+	{path: "edit/pokemon/:id", component: EditPokemonComponent},
 	{ path: "pokemons", component: ListPokemonComponent },
-	{ path: "pokemon/:id", component: DetailPokemonComponent },
+	{ path: "pokemon/:id", component: DetailPokemonComponent }
 ];
 
 @NgModule({
@@ -25,9 +26,10 @@ const pokemonRoutes: Routes = [
 		ListPokemonComponent,
 		BorderCardDirective,
 		PokemonTypeColorPipe,
-  PokemonFormComponent,
+		PokemonFormComponent,
+		EditPokemonComponent,
 	],
-	imports: [CommonModule, FormsModule,RouterModule.forChild(pokemonRoutes)],
+	imports: [CommonModule, FormsModule, RouterModule.forChild(pokemonRoutes)],
 	providers: [
 		{
 			provide: LOCALE_ID,

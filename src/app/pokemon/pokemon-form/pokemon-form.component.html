@@ -20,7 +20,7 @@
 						[hidden]="name.valid || name.pristine"
 						class="card-panel red accent-1"
 					>
-						Le nom du pokémon est requis (1-25).
+						Le nom du pokémon est requis (1 à 25 caractères).
 					</div>
 				</div>
 
@@ -70,7 +70,7 @@
 				<!-- Pokemon types -->
 				<form class="form-group">
 					<label for="types">Types</label>
-					<p *ngFor="let type of types">
+					<p *ngFor="let type of pokemonsTypes">
 						<label>
 							<input
 								type="checkbox"

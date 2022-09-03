@@ -248,7 +248,7 @@ Il existe deux modules permettant de créer des formulaires dans Angular, qui pr
 - `FormsModule`: développe une partie importante du formulaire dans le template, on parle de **template-driven forms** (conseillé pour les petits formulaires)
 - `ReactiveFormsModule`: centré sur le développement du formulaire côté composant
 
-##### 1) FormsModule
+##### FormsModule
 
 `@NgForm`: directive qui va créer une instance d'un objet nommé `FormGroup` au niveau  global du formulaire. Une référence à cette directive nous permet de savoir si le formulaire que remplit l'utilisateur est valide ou non. On peut également ête notifié dés que l'utilisateur déclenchera la soumission du formulaire. 
 
