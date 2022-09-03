@@ -4,6 +4,8 @@ Un composant Angular représente un bout d'interface de l'application.
 
 **Vue**: portion de l'écran controllée par un composant, va être définie dans le template d'un composant et pilotée par la classe du composant
 
+Générer un composant: `ng generate component nom_du_component`
+
 `selector`:  nom du composant, de la balise qui lui sera associée 
 `templateUrl`: définit le code HTML associé à ce composant, un template est la vue du composant qui contient le code de l'interface utilisateur
 `OnInit`: interface du cycle de vie du composant, il faut ensuite définir la méthode associée  
@@ -25,11 +27,10 @@ export class AppComponent implements OnInit {
 }
 ````
 
-
-
 ### Les directives
 
-`@Directive`: Une directive est une classe angular qui ressemble à un composant mais n'a pas de template, la classe `Component` hérite de la classe directive. Elle change l'apparence ou le comportement d'un élément.
+`@Directive`: Une directive est une classe angular qui ressemble à un composant mais n'a pas de template, la classe `Component` hérite de la classe directive. Elle change l'apparence ou le comportement d'un élément. 
+
 Elle permet d'intéragir avec des éléments HTML d'une page, en leur attachant un comportement spécifique.  
 Elle possède un sélecteur css, qui indique au framework où l'activer dans notre template, lorsqu'angular trouve une directive dans le template, il instancie la classe de notre directive correspondante et lui donne le controle sur la portion du dom qui lui convient.  
 Il y a 3 types de directives:
@@ -37,7 +38,7 @@ Il y a 3 types de directives:
 - les directives d'attributs
 - les directives structurelles (ngIf, ngFor ...)
 
-
+Générer une directive: `ng generate directive nom_de_la_directive`
 
 `elementRef` est une référence vers l'élément du dom sur lequel nous allons appliquer une directive, exemple:
 ````ts
@@ -69,7 +70,11 @@ constructor(private element: ElementRef) {
 
 ### Les pipes
 
-Un pipe permet d'effectuer des transformations dans le template. Il est également possible de créer des pipes personnalisés. Exemple de pipe qui renvoie une classe css différente selon le type de Pokémon:
+Un pipe permet d'effectuer des transformations dans le template. Il est également possible de créer des pipes personnalisés. 
+
+Générer un pipe: `ng generate pipe nom_du_pipe`
+
+Exemple de pipe qui renvoie une classe css différente selon le type de Pokémon:
 
 ````ts
 @Pipe({ name: "pokemonTypeColor" })
@@ -153,3 +158,52 @@ Propriétés du décorateur `@NgModule`:
 - `imports`: concerne toutes les classes exportées depuis d'autres modules, nécessaire au fonctionnement du module actuel
 - `providers`: services et injections de dépendances qui permettent de fournir un service au module
 - `bootstrap`: propre au module racine, permet de dire à Angular quel est le premier composant à démarrer (composant racine)
+
+### Les services
+
+Un service permet de centraliser des données, et des opérations, il sera utilisable pour tous les composants d'un module afin de fournir un accés et des méthodes prêtes à l'emploi pour gérer les données au sein de ceux-ci.  
+
+L'objectif est de masquer à nos composants la façon dont on gére ces données et le fonctionnement interne de certaines méthodes, cela permet de factoriser des comportements communs entres différents composants. 
+
+Générer un service: `ng generate service nom_du_dossier/ nom-du-service`  
+
+L'option `--dry-run` indique ce qu'aurait fait angular cli mais sans le faire.
+
+Angular  dispose de son propre framework d'injection. L'injection de dépendances est un **design pattern**(modèle de développement), dans lequel chaque classe reçoit ses dépendances d'une source externe plutôt qu'en les créant elle-même.Le pattern **Singleton** signifie travailler avec une instance unique dans notre projet.    
+
+Les **fournisseurs** permettent de rendre le service disponible là où nous en avons besoin.
+
+
+Le décorateur `@Injectable` indique à Angular que notre service peut lui-même avoir d'autres dépendances. Il permet d'injecter des services dans le constructeur de nos composants. :warning:On ne va jamais créer une instance de service nous même ! 
+
+Le service peut être disponible à différents niveaux:
+
+- `providedIn: 'root` permet d'indiquer à Angular que l'on veut utilise la même instance du service à travers toute l'application. 
+- `providers: [PokemonService]` dans `@NgModule` permet d'injecter le service dans un module 
+- `providers: [PokemonService]` dans `@Component` permet d'injecter le service dans un composant (❌ non recommandé, ne respecte pas le design pattern Singleton car il crée une nouvelle instance du service propre au composant)
+
+
+Exemple de service:
+
+````ts
+@Injectable({
+	providedIn: "root",
+})
+export class PokemonService {
+	getPokemonList(): Pokemon[] {
+		return POKEMONS
+	}
+	getPokemonById(pokemonId: number): Pokemon | undefined {
+		return POKEMONS.find(pokemon => pokemon.id == pokemonId);
+	}
+}
+````
+
+Pour consommer un service il faut l'injecter dans le constructeur du composant:
+
+````ts
+constructor(
+	private pokemonService: PokemonService // récupére une instance unique de mon service 
+) {}
+````
+
