@@ -248,7 +248,7 @@ Il existe deux modules permettant de créer des formulaires dans Angular, qui pr
 - `FormsModule`: développe une partie importante du formulaire dans le template, on parle de **template-driven forms** (conseillé pour les petits formulaires)
 - `ReactiveFormsModule`: centré sur le développement du formulaire côté composant
 
-#### FormsModule
+### FormsModule
 
 `@NgForm`: directive qui va créer une instance d'un objet nommé `FormGroup` au niveau  global du formulaire. Une référence à cette directive nous permet de savoir si le formulaire que remplit l'utilisateur est valide ou non. On peut également ête notifié dés que l'utilisateur déclenchera la soumission du formulaire. 
 
@@ -302,4 +302,58 @@ Observable.fromArray([1, 2, 3, 4, 5])
 	.toPromise().then((x) => console.log(x)); // transforme un Observable en promesse (méthode toPromise de RxJS)
 ````
 
+## Les requêtes HTTP
+
+**Rappel**: une API est une interface de programmation qui permet de communiquer avec un service distant depuis l'application.
+
+`HttpClientModule`: client http qui permet de requêter des serveurs distants. On l'importe à la racine du projet, puis il sera injectable dans tous nos composants.
+
+### Simuler une API
+
+1. `npm i angular-in-memory-web-api --save-dev`: installer le package
+2. `ng generate service in-memory-data`: créer un service pour simuler une base de données dans notre application
+3. `import { InMemoryDbService} from 'angular-in-memory-web-api';`: importer l'interface nécessaire
+4. implémenter l'interface au sein du service
+5. déclarer cette API auprès du reste de l'application
+6. Utiliser cette interface
+
+Exemple:
+
+````ts
+// Le service qui simule la BDD
+export class InMemoryDataService implements InMemoryDbService {
+	createDb() {
+		return {POKEMONS};
+	}
+}
+// Les imports dans le module racine
+imports: [
+		BrowserModule, 
+		HttpClientModule,
+		HttpClientInMemoryWebApiModule.forRoot(
+			InMemoryDataService, 
+			{dataEncapsulation: false} // évite l'encapsulation des données dans "data"
+		)
+	]
+// injection de l'interface dans le service de pokémons et utilisation de celui-ci avec la librairie RxJS
+@Injectable()
+export class PokemonService {
+	constructor(private http: HttpClient) {}
+	getPokemonList(): Observable<Pokemon[]> {
+		// on va retourner un flux qui contient les pokémons et définir ce uq el'on veut faire du traitement de la requête
+		return this.http.get<Pokemon[]>('api/pokemons').pipe( 
+			tap((response) => console.table(response)), // s'il y a une réponse, on log la réponse
+			catchError((error) => {
+				console.log(error); // s'il y a une erreur on log l'erreur
+				return of([]) // et on renvoit un tableau vide
+				
+			})
+		)
+	}
+}
+````
+
+`tap`: équivalent d'un `console.log` adapté à un observable (n'a pas d'incidence sur le flux).
+`catchError`: permet d'intercepter les erreurs et de retourner ce que l'on souhaite si une erreur se produit.
+`of`: transforme une donnée simple en un flux de données, c'est à dire un Observable qui emet la donnée en paramètre.
 

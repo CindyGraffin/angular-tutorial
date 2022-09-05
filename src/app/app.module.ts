@@ -7,6 +7,9 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { PokemonModule } from "./pokemon/pokemon.module";
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
+import { InMemoryDataService } from "./in-memory-data.service";
 
 @NgModule({
 	// éléments dont a besoin ce module pour fonctionner
@@ -15,8 +18,11 @@ import { PokemonModule } from "./pokemon/pokemon.module";
 	imports: [
 		BrowserModule, 
 		FormsModule, 
+		HttpClientModule,
+		HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false}),
 		PokemonModule, 
-		AppRoutingModule],
+		AppRoutingModule
+	],
 	// permet d'utiliser le système d'injection de dépendances d'Angular
 	providers: [
 		{
