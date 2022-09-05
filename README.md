@@ -19,20 +19,20 @@ Lien de la documentation officielle Angular: [angular.io](https://angular.io/)
 - Une collection de librairies comme par exemple le routage, la gestion de formulaire
 - Une suite d'outils de développements pour construire, tester et mettre à jour le code
 
-### Pré-requis
+## Pré-requis
 
 Avant de suivre ce tutoriel, ou de lire cette documentation, il est fortement conseillé:
 - d'avoir de bonnes connaissances en HTML, CSS et JavaScript
 - de disposer d'un éditeur de code (par exemple *VSCode*)
 
-### Installation
+## Installation
 
 1. `git clone https://github.com/CindyGraffin/angular-tutorial.git`: clone le projet dans un dossier local
 2. `npm install`: installe tout les packages dont le projet dépend
 3. `ng serve`: compile et lance l'application sur un port donné
 
 
-### Les composants
+## Les composants
 
 Un composant Angular représente un bout d'interface de l'application.
 
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
 }
 ````
 
-### Les directives
+## Les directives
 
 `@Directive`: Une directive est une classe angular qui ressemble à un composant mais n'a pas de template, la classe `Component` hérite de la classe directive. Elle change l'apparence ou le comportement d'un élément. 
 
@@ -102,7 +102,7 @@ constructor(private element: ElementRef) {
 }
 ````
 
-### Les pipes
+## Les pipes
 
 Un pipe permet d'effectuer des transformations dans le template. Il est également possible de créer des pipes personnalisés. 
 
@@ -134,7 +134,7 @@ export class PokemonTypeColorPipe implements PipeTransform {
 <p class="{{type | pokemonTypeColor}}">Mon Pokémon</p>
 ````
 
-### Les routes 
+## Les routes 
 
 On rend disponible le router depuis le constructeur. `ActivatedRoute` donne accès à la route courante, au service route au composant.
 Exemple: 
@@ -179,7 +179,7 @@ Pour récupérer un paramètre d'url à un instant T, on utilise la `snapshot`. 
 const pokemonId: string | null = this.route.snapshot.paramMap.get('id');
 ````
 
-### Les modules
+## Les modules
 
 Une application Angular est modulaire, elle est composée de modules de fonctionnalités. Un module permet de centraliser tout ce qui concerne la gestion d'une fonctionnalité.
 
@@ -193,7 +193,7 @@ Propriétés du décorateur `@NgModule`:
 - `providers`: services et injections de dépendances qui permettent de fournir un service au module
 - `bootstrap`: propre au module racine, permet de dire à Angular quel est le premier composant à démarrer (composant racine)
 
-### Les services
+## Les services
 
 Un service permet de centraliser des données, et des opérations, il sera utilisable pour tous les composants d'un module afin de fournir un accés et des méthodes prêtes à l'emploi pour gérer les données au sein de ceux-ci.  
 
@@ -241,14 +241,14 @@ constructor(
 ) {}
 ````
 
-### Les formulaires
+## Les formulaires
 
 Il existe deux modules permettant de créer des formulaires dans Angular, qui proviennent de la même librairie `@angular/forms`:
 
 - `FormsModule`: développe une partie importante du formulaire dans le template, on parle de **template-driven forms** (conseillé pour les petits formulaires)
 - `ReactiveFormsModule`: centré sur le développement du formulaire côté composant
 
-##### FormsModule
+#### FormsModule
 
 `@NgForm`: directive qui va créer une instance d'un objet nommé `FormGroup` au niveau  global du formulaire. Une référence à cette directive nous permet de savoir si le formulaire que remplit l'utilisateur est valide ou non. On peut également ête notifié dés que l'utilisateur déclenchera la soumission du formulaire. 
 
@@ -264,4 +264,42 @@ Déclaration de formulaire dans le template:
 `[(ngModel)]`: contient des crochets (property binding qui permet de pousser des données de la classe du composant vers le template) et des parenthèses (synthaxe de liaison d'évenements, pour remonter les événements du template du composant vers sa classe). En combinant les deux, cela permet de mettre en place une liaison de donnée bidirectionnelle.  
 
 `#name="ngModel"`: le résultat du `ngModel` qui en interne pour angular est un objet métier qui représenter un champ du formulaire, notamment son état de validié, va être attribué directement à une variable référencée dans le template.
+
+## La programmation réactive
+
+La programmation réactive est une nouvelle manière d'aborder la programmation asynchrone, c'est une façon différente de concevoir une application. Toutes les séquences d'événements sont appelées des flux.
+
+L'idée est de consiérer les interactions qui se déroulent dans l'application comme des événements sur lequel on peut ecffectuer des oéprations, des regroupements, des filtrages, des combinaisons, etc .. Ainsi les évenements, tels que des click de souris, deviennent des événements asynchrones auxquels on peut s'abonner pour ensuit epouvoir y réagir. 
+
+De manière générale tous ces événements sont poussés par un producteur de données vers un consommateur. Notre rôle est de définir des consommateurs, c'est à dire des écouteurs d'événements sous forme de fonction, pour régir aux différents flux qui sont les producteurs de données. 
+
+Les écouteurs d'événements sont nommés des **Observer** et le flux lui même est le sujet observé, on parle d'**Observable**. Lorsque l'on s'abonne à un flux pour capter ses événements, on dit que l'on s'inscrit ou l'on s'abonne à ce flux.
+
+
+**Flux** = Séquence d'événements en cours qui sont ordonnés dans le temps. Ils peuvent émettre 3 types de réponses différentes, pour chacune on peut définir une fonction:
+- Une fonction pour traiter les différentes valeurs de la réponse (un nombre, un tableau ...)
+- Une fonction pour traiter le cas d'erreur
+- Une fonction pour traiter le cas de fin (signifie que le flux est terminé et qu'il n'émettra plus d'événements)
+
+Les événements du flux réprésentent soit les données de la réponse en cas de succès, soit des erreurs ou des terminaisons.
+
+:bulb:**Programmation réactive = Programmation avec des flux de données asynchrones**
+
+### La librairie RxJS
+
+Pour faciliter l'implémentation de la programmation réactive, on utilise souvent des librairies spécifiques. La plus populaire de l'éco-système JavaScript est **RxJS**.
+
+Dans RxJS, un flux d'événement est représenté par un objet, appelé un Observable.
+
+**Observable**: similaire à des tableaux, ils contiennent une collection de valeur et ajoute la notion de vleur reportée dans le temps. Dans un tableau toutes les valeurs sont disponibles immédiatement, en revanche dans un Observable, les valeurs viendront au fur et à mesure. On peut traiter les Observable de façon similaire aux tableaux. Un Observable est une simple collection asynchrone, dont les événements arrivent au fil du temps. Il n'est pas à usage unique et continuera d'émettre des évenements jusqu'à ce qu'il émette un élément de terminaison ou que l'on se desabonne de lui. Exemple:
+
+````js
+Observable.fromArray([1, 2, 3, 4, 5])
+	.filter(x => x > 2) // 3, 4, 5
+	.map (x => x*2) // 6, 8, 10
+	.subscribe(x => console.log(x)) // affiche le résultat => 6, 8, 10
+	// OU
+	.toPromise().then((x) => console.log(x)); // transforme un Observable en promesse (méthode toPromise de RxJS)
+````
+
 
