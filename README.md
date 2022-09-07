@@ -269,7 +269,7 @@ Déclaration de formulaire dans le template:
 
 La programmation réactive est une nouvelle manière d'aborder la programmation asynchrone, c'est une façon différente de concevoir une application. Toutes les séquences d'événements sont appelées des flux.
 
-L'idée est de consiérer les interactions qui se déroulent dans l'application comme des événements sur lequel on peut ecffectuer des oéprations, des regroupements, des filtrages, des combinaisons, etc .. Ainsi les évenements, tels que des click de souris, deviennent des événements asynchrones auxquels on peut s'abonner pour ensuit epouvoir y réagir. 
+L'idée est de consiérer les interactions qui se déroulent dans l'application comme des événements sur lequel on peut effectuer des opérations, des regroupements, des filtrages, des combinaisons, etc .. Ainsi les évenements, tels que des click de souris, deviennent des événements asynchrones auxquels on peut s'abonner pour ensuite pouvoir y réagir. 
 
 De manière générale tous ces événements sont poussés par un producteur de données vers un consommateur. Notre rôle est de définir des consommateurs, c'est à dire des écouteurs d'événements sous forme de fonction, pour régir aux différents flux qui sont les producteurs de données. 
 
@@ -323,9 +323,11 @@ Exemple:
 // Le service qui simule la BDD
 export class InMemoryDataService implements InMemoryDbService {
 	createDb() {
-		return {POKEMONS};
+		const pokemons = POKEMONS;
+		return {pokemons};
 	}
 }
+
 // Les imports dans le module racine
 imports: [
 		BrowserModule, 
@@ -335,12 +337,14 @@ imports: [
 			{dataEncapsulation: false} // évite l'encapsulation des données dans "data"
 		)
 	]
+
 // injection de l'interface dans le service de pokémons et utilisation de celui-ci avec la librairie RxJS
 @Injectable()
 export class PokemonService {
 	constructor(private http: HttpClient) {}
+	// GET
 	getPokemonList(): Observable<Pokemon[]> {
-		// on va retourner un flux qui contient les pokémons et définir ce uq el'on veut faire du traitement de la requête
+		// on va retourner un flux qui contient les pokémons et définir ce que l'on veut faire du traitement de la requête
 		return this.http.get<Pokemon[]>('api/pokemons').pipe( 
 			tap((response) => console.table(response)), // s'il y a une réponse, on log la réponse
 			catchError((error) => {
@@ -350,10 +354,26 @@ export class PokemonService {
 			})
 		)
 	}
+	// PUT
+	updatePokemon(pokemon: Pokemon): Observable<null> { // avec l'api interne d'angular on reçoit null que ce soit en cas de succès ou non
+		const httpOptions = {
+			headers: new HttpHeaders({'Content-Type': 'application/json'}) // précise que je transmet des données dans cette requête
+		};
+		return this.http.put('api/pokemons', pokemon, httpOptions)
+						.pipe(catchError(error => this.handleError(error, null)))
+	}
+}
+
+// Utilisation dans le module d'un composant
+onSubmit() {
+	this.pokemonService
+		.updatePokemon(this.pokemon)
+		.subscribe(() => this.router.navigate(['/pokemon', this.pokemon.id])) // en cas de succès
 }
 ````
 
 `tap`: équivalent d'un `console.log` adapté à un observable (n'a pas d'incidence sur le flux).
 `catchError`: permet d'intercepter les erreurs et de retourner ce que l'on souhaite si une erreur se produit.
 `of`: transforme une donnée simple en un flux de données, c'est à dire un Observable qui emet la donnée en paramètre.
+`subscribe`: permet de s'abonner à un `Observable`
 
