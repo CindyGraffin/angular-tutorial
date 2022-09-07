@@ -372,8 +372,8 @@ onSubmit() {
 }
 ````
 
-`tap`: équivalent d'un `console.log` adapté à un observable (n'a pas d'incidence sur le flux).
-`catchError`: permet d'intercepter les erreurs et de retourner ce que l'on souhaite si une erreur se produit.
-`of`: transforme une donnée simple en un flux de données, c'est à dire un Observable qui emet la donnée en paramètre.
-`subscribe`: permet de s'abonner à un `Observable`
+`tap`: équivalent d'un `console.log` adapté à un observable (n'a pas d'incidence sur le flux).  
+`catchError`: permet d'intercepter les erreurs et de retourner ce que l'on souhaite si une erreur se produit.  
+`of`: transforme une donnée simple en un flux de données, c'est à dire un Observable qui emet la donnée en paramètre.  
+`subscribe`: permet de s'abonner à un `Observable`  
 
