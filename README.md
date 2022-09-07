@@ -302,6 +302,39 @@ Observable.fromArray([1, 2, 3, 4, 5])
 	.toPromise().then((x) => console.log(x)); // transforme un Observable en promesse (méthode toPromise de RxJS)
 ````
 
+`Subject`: classe de RxJS, qui se comporte comme un `Observable`, à la différence qu'un `Observable` ne peut qu'être que consommé (subscribe pour recevoir des données dans le temps), alors que `Subject` permet de piloter un `Observable`, afin de construire un flux de données et pas seulement de le consommer. Exemple:
+````ts
+// flux de pokémons
+pokemons$: Observable<Pokemon[]>; // généralement quand une variable contient un flux de données on rajoute un "$" à la fin (par convention)
+// construction du flux de données
+searchTerms = new Subject<string>();
+// pousser les données dans le flux searchTerm grâce à next (similaire à push pour un tableau)
+search(term: string) {
+	this.searchTerms.next(term) 
+}
+````
+Cette classe va nous permettre de stocker ici les recherches de l'utilisateur, dans un tableau de chaîne de caractéres. On va obtenir un flux de données dans le temps des recherches de l'utilisateur.  
+
+Le pipe `async` ne peut s'appliquer que sur des flux de données (Observable), et évite l'utilisation de subscribe. 
+
+````html
+<a *ngFor="let pokemon of pokemons$ | async" 
+    (click)="goToDetail(pokemon)" 
+>
+````
+
+Exemple d'utilisation de la librairie RxJS en programmation réactive, dans un module:
+````ts
+ngOnInit(): void {
+	this.pokemons$ = this.searchTerms.pipe(
+	debounceTime(300), // permet d'éliminer les recherches qui n'ont pas au moins un certain nombre de millisecondes d'attente après
+	// RxJS va donc construire un nouveau flux de recherche qui correspond mieux à la recherche de l'utilisateur, ce qui permet d'éliminer des requêtes dont nous n'avons pas besoin
+	distinctUntilChanged(), // opérateur qui va attendre qu'il y ait un changement dans les termes de recherche et procurer un nouveau flux de données
+	switchMap((term) => this.pokemonService.searchPokemonList(term)) // à chaque fois que l'utilisateur va lancer une nouvelle recherche, je veux anuler la dernière recherche si elle est déjà en cours et venir effectuer uniquement la recherche la plus récente
+	)
+}
+````
+
 ## Les requêtes HTTP
 
 **Rappel**: une API est une interface de programmation qui permet de communiquer avec un service distant depuis l'application.
@@ -376,4 +409,8 @@ onSubmit() {
 `catchError`: permet d'intercepter les erreurs et de retourner ce que l'on souhaite si une erreur se produit.  
 `of`: transforme une donnée simple en un flux de données, c'est à dire un Observable qui emet la donnée en paramètre.  
 `subscribe`: permet de s'abonner à un `Observable`  
+
+**Requête one-shot**: signifie que l'on effectue une requête et que l'on récupére directement le résultat
+
+
 
