@@ -10,10 +10,11 @@ import { PokemonModule } from "./pokemon/pokemon.module";
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { InMemoryDataService } from "./in-memory-data.service";
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
 	// éléments dont a besoin ce module pour fonctionner
-	declarations: [AppComponent, PageNotFoundComponent],
+	declarations: [AppComponent, PageNotFoundComponent, LoginComponent],
 	// éléments qu'on a besoin d'importer dans notre module mais qui sont d'autres modules, se charge dans l'ordre écrit
 	imports: [
 		BrowserModule, 

@@ -327,10 +327,10 @@ Exemple d'utilisation de la librairie RxJS en programmation réactive, dans un m
 ````ts
 ngOnInit(): void {
 	this.pokemons$ = this.searchTerms.pipe(
-	debounceTime(300), // permet d'éliminer les recherches qui n'ont pas au moins un certain nombre de millisecondes d'attente après
-	// RxJS va donc construire un nouveau flux de recherche qui correspond mieux à la recherche de l'utilisateur, ce qui permet d'éliminer des requêtes dont nous n'avons pas besoin
-	distinctUntilChanged(), // opérateur qui va attendre qu'il y ait un changement dans les termes de recherche et procurer un nouveau flux de données
-	switchMap((term) => this.pokemonService.searchPokemonList(term)) // à chaque fois que l'utilisateur va lancer une nouvelle recherche, je veux anuler la dernière recherche si elle est déjà en cours et venir effectuer uniquement la recherche la plus récente
+		debounceTime(300), // permet d'éliminer les recherches qui n'ont pas au moins un certain nombre de millisecondes d'attente après
+		// RxJS va donc construire un nouveau flux de recherche qui correspond mieux à la recherche de l'utilisateur, ce qui permet d'éliminer des requêtes dont nous n'avons pas besoin
+		distinctUntilChanged(), // opérateur qui va attendre qu'il y ait un changement dans les termes de recherche et procurer un nouveau flux de données
+		switchMap((term) => this.pokemonService.searchPokemonList(term)) // à chaque fois que l'utilisateur va lancer une nouvelle recherche, je veux anuler la dernière recherche si elle est déjà en cours et venir effectuer uniquement la recherche la plus récente
 	)
 }
 ````
@@ -405,12 +405,54 @@ onSubmit() {
 }
 ````
 
-`tap`: équivalent d'un `console.log` adapté à un observable (n'a pas d'incidence sur le flux).  
+`tap`: permet d'inspecter ce qu'il se passe dans le flux (n'a pas d'incidence sur le flux).  
 `catchError`: permet d'intercepter les erreurs et de retourner ce que l'on souhaite si une erreur se produit.  
 `of`: transforme une donnée simple en un flux de données, c'est à dire un Observable qui emet la donnée en paramètre.  
-`subscribe`: permet de s'abonner à un `Observable`  
+`subscribe`: permet de s'abonner à un `Observable`. 
 
-**Requête one-shot**: signifie que l'on effectue une requête et que l'on récupére directement le résultat
+**Requête one-shot**: signifie que l'on effectue une requête et que l'on récupére directement le résultat.
+
+## Authentification et sécurité
+
+**guard**: mécanisme de protection utilisé par Angular et attaché à une route, pour mettre par exemple en place l'authentification. Ils peuvent être utilisés pour gérer toute sorte de scénario lié à la navigation, rediriger un utilisateur qui tente d'accéder à une route par exemple, ou l'obliger à s'authentifier. Ils retournent un booléen qui permet de controle le comportement de la navigation. 2 scénarios:
+- Il retourne `true` et le processus de navigation continue
+- Il retourne `false` et le processus de navigation cesse et l'utilisateur reste sur la même page
+
+Dans la plupart des cas, un guard renvoie un Observable qui contient un booléen ou une promesse, et le router attendra la réponse pour agir sur la navigation. Il existe différents types de guards:
+- `CanActivate`: influence sur la navigation d'une route (notament le blocage de celle-ci)
+- `CanActivateChild`: peut influencer sur la navigation d'une route fille 
+- `CanDeactivate`: peut empêcher l'utilisateur de naviguer en dehors de la route courante
+- `Resolve`: peut effectuer une récupération de données avant de naviguer
+- `CanLoad`: peut gérer la navigation vers un sous-module chargé de manière asynchrone
+
+Si un guard retourne `false`, tous les autres enn attente seront annulés et la navigation entière sera bloquée. 
+
+Générer un guard: `ng generate guard guard_name`
+
+Exemple de guard:
+
+````ts
+@Injectable({
+	providedIn: "root",
+})
+export class AuthGuard implements CanActivate {
+	constructor(private authService: AuthService, private router: Router) {}
+	canActivate(): boolean {
+		if(this.authService.isLoggedIn) {
+			return true;
+		}
+		this.router.navigate(['/login']);
+		return false;
+	}
+}
+````
+
+Ajouter un guard à une route:
+````ts
+{path: "edit/pokemon/:id", component: EditPokemonComponent, canActivate: [AuthGuard]}, // quand un utilisateur va demander à accéder à cette route, on va appeler AuthGuard et si CanActivate renvoie true, l'utilisateur pourra accéder à la page alors que s'il renvoit false, l'accès à cette page est bloqué
+````
+
+
 
 
 
