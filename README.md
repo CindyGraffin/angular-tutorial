@@ -477,6 +477,42 @@ Les commandes de Firebase CLI:
 - `firebase init`: permet de relier nos fichiers en local avec le serveur de production Firebase
 - `firebase deploy`: permet de déployer le projet en ligne, angular sait où snt les fichiers à déployer en local sur notre machine, et où et comment les pousser sur les serveurs en production
 
+## BONUS: ECMAScript6 
+
+EcmaScript6 est le nom de la dernière version standardisée de JavaScript, approuvé par l'organisme de normalisation en Juin 2015. IL a été annoncé pour la première fois en 2008. C'est une spécification standardisée qui ne concerne pas seulement le JavaScript, mais également Swift d'Apple par exemple.
+
+**ECMA Script 6 = ES6 = ECMAScript2015**
+
+ES6 utilise un transpilateur pour convertir le code ES6 en code ES5, le code devient ainsi compéhensible pour tous les navigateurs.
+
+**Transpilateur**: outil qui permet de publier son code pour les navigateurs qui ne supportent pas encore l'ES6, son rôle est de traduire ce code, les fonctionnalités qui ne sont pas supportés dans ES5 auront leur comportement simulé.
+
+### Les nouveautés ES6
+
+- Les **classes**: avec la nouvelle synthaxe `class` (héritage de prototype qui tourne dérrière)et le mot clé `constructeur` pour initialiser une valeurs aux attributs de nos objets.
+
+- L'**héritage**: plus besoin de l'héritage prototypal de JavaScript, on utilise désormais le mot-clé `extends` pour dire que la classe hérite d'une autre classe, et on utilise le mot-clé `super` pour appeler le constructeur de la classe parent.
+
+- Les **paramétres par défaut**: avant il n'y avait pas d'arguments dans la signature de la fonction mais le mot-clé `arguments` qui permet de récupérer sous forme de tableau tous les paramétres passés à la fonction et ainsi les traiter dans le code de celle-ci. Avec ES6, il suffit de définir une valeur par défaut dans la signature même de la fonction.
+ 
+- Le mot-clé **`let`**: définit un contexte (le scope) pour une variable sans polluer d'autres contextes avec une variable inutile. Il a été pensé pour remplacer le mot-clé `var`.
+
+- Le mot-clé **`const`**: permet de définir une constante, la déclaration de celle-ci se fait une seule fois et une fois définie on ne peut plus changer sa valeur. Pour une constante de tableau ou d'objets, on ne peut pas modifier la référence vers ceux-cis, mais on peut modifier les valeurs à l'intérieur de tableau, ou les propriétés de l'objet.
+
+- Les **promesses**: permet de simplifier la programmation asynchrone.
+
+- Les **fonctions fléchées**: simplifient l'écriture des fonctions anonymes. (= arrow function) A la différence des fonctions traditionnelles, elles ne définissent pas un nouveau contexte. Elles sont souvent utilisées pour les fonctions asynchrones.
+
+- **`Map` et `Set`**: ce sont des collections, `Map` permet de créer un dictionnaire (méthode `.set(clé, objet)` afin d'ajouter un objet au dictionnaire) et `Set` de créer une nouvelle liste (méthode `.add(objet)` pour ajouter l'objet à la liste).
+
+- Les **template strings**: permet d'éviter la concaténation qui commencent et se terminent par un backtick, qui permet d'écrire sur plusieurs lignes et d'y passer des variables avec `${variable}`.
+
+**Signature de fonction**: définit les entrées et sorties des fonctions et méthodes, elle peut comporter les paramètres, leur type ainsi qu'une valeur et un type de retour.
+
+
+
+
+
 
 
 
