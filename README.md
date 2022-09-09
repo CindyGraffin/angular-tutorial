@@ -31,6 +31,8 @@ Avant de suivre ce tutoriel, ou de lire cette documentation, il est fortement co
 2. `npm install`: installe tout les packages dont le projet dépend
 3. `ng serve`: compile et lance l'application sur un port donné
 
+❗**Important**: Le `name` et le `password` pour se connecter sur l'application en production est `pikachu`.
+
 
 ## Les composants
 
@@ -451,6 +453,36 @@ Ajouter un guard à une route:
 ````ts
 {path: "edit/pokemon/:id", component: EditPokemonComponent, canActivate: [AuthGuard]}, // quand un utilisateur va demander à accéder à cette route, on va appeler AuthGuard et si CanActivate renvoie true, l'utilisateur pourra accéder à la page alors que s'il renvoit false, l'accès à cette page est bloqué
 ````
+
+## Deployer l'application
+
+**Rappel**: le terme production désigne un environnement lorsque l'utilisation est prête à êter utilisée par les utilisateurs
+
+Nous allons utiliser **Firebase Hoisting** en version gratuite. Voici la liste des tâches à accomplir pour déployer notre projet:
+
+1. Préparer le projet en local avant le déploiement 
+2. Créer le projet sur le site de Firebase qui donnera accès à une console d'administration
+3. Déployer l'application sur Firebase
+
+IL faut demander à Angular CLI de compiler notre projet pour qu'il soit prêt pour la production.
+
+`ng build`: permet de passer en mode production et ainsi de construire un livrable, réalisé automatiquement par Angular. Cela va compiler les fichiers typescript, supprimer les dépendances dont nous n'avons pas besoin, etc.. On obtiendra l'ensemble des fichiers optimisés, que l'on va pouvoir déployer sur Firebase, notre serveur de production.
+
+`npm install -g firebase-tool`: installe Firebase CLI en global sur la machine
+
+Les commandes de Firebase CLI:
+
+- `firebase --version`: vérifier que l'utilitaire est bien installé
+- `firebase login`: permet de lier le compte google et donc les projets firebase à l'utilitaire que nous venons d'installer
+- `firebase init`: permet de relier nos fichiers en local avec le serveur de production Firebase
+- `firebase deploy`: permet de déployer le projet en ligne, angular sait où snt les fichiers à déployer en local sur notre machine, et où et comment les pousser sur les serveurs en production
+
+
+
+
+
+
+
 
 
 
